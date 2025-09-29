@@ -1,0 +1,25 @@
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ],
+  "headers": [
+    {
+      "source": "/fonts/(.*).woff2",
+      "headers": [
+        { "key": "Content-Type", "value": "font/woff2" }
+      ]
+    },
+    {
+      "source": "/fonts/(.*).woff",
+      "headers": [
+        { "key": "Content-Type", "value": "font/woff" }
+      ]
+    },
+    {
+      "source": "/fonts/(.*).ttf",
+      "headers": [
+        { "key": "Content-Type", "value": "font/ttf" }
+      ]
+    }
+  ]
+}

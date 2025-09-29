@@ -1,0 +1,62 @@
+@import 'tailwindcss';
+
+@font-face {
+    font-family: 'MUSASHI';
+    src: url('/fonts/MUSASHI.ttf') format('truetype');
+    font-display: swap;
+  }
+
+@font-face {
+  font-family: 'Olympic';
+  src: url('/fonts/Olympic.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Weight';
+  src: url('/fonts/Weight.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Strategy';
+  src: url('/fonts/Strategy.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LEMONMILK';
+  src: url('/fonts/LEMONMILK-Regular.otf') format('opentype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mottarue';
+  src: url('/fonts/Mottarue.ttf') format('truetype');
+  font-display: swap;
+}
+
+#PickUp, #product-name, #product-price {
+  font-family: 'Weight', sans-serif;
+}
+
+#welcome{
+  font-family: 'MUSASHI', sans-serif;
+}
+
+#category-name {
+  font-family: 'MUSASHI', sans-serif;
+}
+#view-order {
+  font-family: 'Weight', sans-serif;
+}
+
+#get-you-coffee {
+  font-family: 'Roboto', sans-serif;
+}
+
+
+@media (max-width: 420px) {
+  #subtitle {
+    font-size: 2.5rem; /* same as Tailwind text-3xl */
+  }
+}
