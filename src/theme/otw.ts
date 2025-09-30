@@ -25,6 +25,7 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
     track_bg: `/images/otw/track_bg.jpg`,
     bg_image: `/images/otw/welcome_bg.jpg`,
     page_bg: `${supabaseUrl}/storage/v1/object/public/web-ordering/images/otw_bg.jpg`,
+    width: '400px',
   }
 
   export default otwTheme;

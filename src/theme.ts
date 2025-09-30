@@ -25,8 +25,10 @@ export type Theme = {
   bg_image: string
   track_bg: string
   page_bg: string
+  width: string;
 }
 const branchName = import.meta.env.VITE_BRANCH_NAME 
+
 
 let theme: Theme
 

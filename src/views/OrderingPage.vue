@@ -1,100 +1,100 @@
 <template>
-  <div class="flex w-full flex-col items-center justify-center mt-5">
+  <div class="flex w-full flex-col items-center justify-center ">
     <!-- <span id="PickUp" class="block text-xl font-bold sm:text-5xl">Pick Up</span>
     <p id="pickup-desc" class="text-xl font-extralight text-black text-gray-600 sm:text-2xl md:text-2xl lg:text-3xl">
       Pick up in store without waiting in line.
     </p> -->
     <!-- Categories + Products -->
-<div class="flex w-full gap-4 px-2">
-  <div class="w-1/5 border-r border-gray-200 pr-2 sm:pr-4 sticky top-0" style="height: fit-content;">
-    <CategoryCard :selectedCategoryId="activeCategoryId" @categorySelected="onCategoryClick" />
-  </div>
-
-  <div class="w-4/5 flex-1" :class="{ 'scrolled-down': isScrolledDown }">
-    <!-- Search Results View (No Categories) -->
-    <div v-if="isSearching" class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-      <div v-if="loading" class="col-span-full text-center text-gray-500">Loading...</div>
-      <div v-else-if="filteredItems.length === 0" class="col-span-full text-center text-gray-500">
-        No products found for "{{ orderingUi.searchTerm }}".
-      </div>
-      <div
-        v-else
-        v-for="(item, idx) in filteredItems"
-        :key="item.id"
-        class="product-card"
-        :style="{ '--stagger-index': idx }"
-      >
-        <ProductCard
-          :productItem="item"
-          @select="openProductModal"
-        />
-      </div>
+  <div class="flex w-full gap-4 px-2">
+    <div class="w-1/5 border-r border-gray-200 pr-2 sm:pr-4 sticky top-16" style="height: fit-content;">
+      <CategoryCard :selectedCategoryId="activeCategoryId" @categorySelected="onCategoryClick" />
     </div>
 
-    <!-- Category View (Default) -->
-    <div v-else class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-      <div v-if="loading" class="col-span-full text-center text-gray-500">Loading...</div>
-      <div v-else-if="filteredItems.length === 0" class="col-span-full text-center text-gray-500">
-        No products found.
+    <div class="w-4/5 flex-1" :class="{ 'scrolled-down': isScrolledDown }">
+      <!-- Search Results View (No Categories) -->
+      <div v-if="isSearching" class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <div v-if="loading" class="col-span-full text-center text-gray-500">Loading...</div>
+        <div v-else-if="filteredItems.length === 0" class="col-span-full text-center text-gray-500">
+          No products found for "{{ orderingUi.searchTerm }}".
+        </div>
+        <div
+          v-else
+          v-for="(item, idx) in filteredItems"
+          :key="item.id"
+          class="product-card"
+          :style="{ '--stagger-index': idx }"
+        >
+          <ProductCard
+            :productItem="item"
+            @select="openProductModal"
+          />
+        </div>
       </div>
 
-      <div
-        v-for="cat in categories"
-        :key="cat.category_id"
-        class="col-span-full scroll-mt-28"
-        :id="`section-${cat.category_id}`"
-        :data-category-id="cat.category_id"
-      >
-        <!-- Enhanced Category Header -->
-        <div class="mb-4 mt-6 first:mt-0">
-          <div class="flex items-center gap-3">
-            <h2 id="category-name" class="text-base font-thin px-4 py-2 text-black relative flex items-center gap-2 rounded-md">
-              {{ cat.category_name }}
-            </h2>
-            <div class="flex-1 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
-          </div>
-          <div v-if="cat.category_desc" class="text-center text-gray-600 text-sm mt-2">
-            {{ cat.category_desc }}
-          </div>
+      <!-- Category View (Default) -->
+      <div v-else class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <div v-if="loading" class="col-span-full text-center text-gray-500">Loading...</div>
+        <div v-else-if="filteredItems.length === 0" class="col-span-full text-center text-gray-500">
+          No products found.
         </div>
 
-        <!-- Products for this category -->
         <div
-          class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 mt-2"
-          :class="[
-            animateCategoryId === cat.category_id ? 'animate-products' : '',
-            animateCategoryId === cat.category_id
-              ? (animateDirection === 'up' ? 'direction-up' : 'direction-down')
-              : ''
-          ]"
+          v-for="cat in categories"
+          :key="cat.category_id"
+          class="col-span-full "
+          :id="`section-${cat.category_id}`"
+          :data-category-id="cat.category_id"
         >
-          <div
-            v-for="(item, idx) in getItemsByCategory(cat.category_id)"
-            :key="item.id"
-            class="product-card"
-            :style="{ '--stagger-index': idx }"
-          >
-            <ProductCard
-              :productItem="item"
-              @select="openProductModal"
-            />
+          <!-- Enhanced Category Header -->
+          <div class="mb-0  first:">
+            <div class="flex items-center gap-3">
+              <h2 id="category-name" class="text-base font-thin px-4 py-2 text-black relative flex items-center gap-2 rounded-md">
+                {{ cat.category_name }}
+              </h2>
+              <div class="flex-1 h-px bg-gradient-to-r from-transparent via-green-500 to-transparent"></div>
+            </div>
+            <div v-if="cat.category_desc" class="text-center text-gray-600 text-sm">
+              {{ cat.category_desc }}
+            </div>
           </div>
+
+          <!-- Products for this category -->
           <div
-            v-if="getItemsByCategory(cat.category_id).length === 0"
-            class="col-span-full text-center py-8"
+            class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+            :class="[
+              animateCategoryId === cat.category_id ? 'animate-products' : '',
+              animateCategoryId === cat.category_id
+                ? (animateDirection === 'up' ? 'direction-up' : 'direction-down')
+                : ''
+            ]"
           >
-            <div class="text-gray-400 text-sm">
-              <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 21l-3-3 3-3"></path>
-              </svg>
-              <p class="italic">No products in this category</p>
+            <div
+              v-for="(item, idx) in getItemsByCategory(cat.category_id)"
+              :key="item.id"
+              class="product-card"
+              :style="{ '--stagger-index': idx }"
+            >
+              <ProductCard
+                :productItem="item"
+                @select="openProductModal"
+              />
+            </div>
+            <div
+              v-if="getItemsByCategory(cat.category_id).length === 0"
+              class="col-span-full text-center py-8"
+            >
+              <div class="text-gray-400 text-sm">
+                <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 21l-3-3 3-3"></path>
+                </svg>
+                <p class="italic">No products in this category</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 
     <!-- Product Modal -->
@@ -217,7 +217,11 @@ const animateCategoryId = ref<number | null>(null);
 const animateDirection = ref<'up' | 'down'>('down');
 const showStickySearch = ref(false);
 const isScrolledDown = ref(false);
-let intersectionObserver: IntersectionObserver | null = null;
+// Precise scroll sync state
+const sectionPositions = ref<Array<{ id: number; top: number }>>([]);
+const isAutoScrolling = ref(false);
+let scrollCheckRaf: number | null = null;
+const SCROLL_OFFSET = HEADER_OFFSET + -20;
 
 // Image URLs
 const imagePrefix = import.meta.env.VITE_SUPABASE_URL + '/storage/v1/object/public/';
@@ -310,10 +314,18 @@ function onCategoryClick(category: { id: number }) {
   // Smooth scroll to target
   const rect = target.getBoundingClientRect();
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  window.scrollTo({ top: rect.top + scrollTop, behavior: 'smooth' });
-  
+  const absoluteTop = rect.top + scrollTop;
+  const targetY = Math.max(0, absoluteTop - SCROLL_OFFSET);
+
+  // Guard programmatic scroll
+  isAutoScrolling.value = true;
+  window.scrollTo({ top: targetY, behavior: 'smooth' });
+  // Mark active immediately for better UX
   activeCategoryId.value = category.id;
   triggerCategoryAnimation(category.id);
+
+  // End guard when scrolling settles
+  settleAfterScroll(targetY);
 }
 
 function triggerCategoryAnimation(categoryId: number) {
@@ -362,82 +374,101 @@ function getItemsByCategory(categoryId: number): ProductItem[] {
   return itemsByCategory.value.get(categoryId) || [];
 }
 
-// Scroll and intersection observer functions
-function setupIntersectionObserver() {
-  intersectionObserver?.disconnect();
+// Scroll and position functions
 
-  intersectionObserver = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((e) => e.isIntersecting)
-        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-
-      if (visible.length > 0) {
-        const nearest = visible
-          .map((e) => ({
-            el: e.target as HTMLElement,
-            distance: Math.abs(e.boundingClientRect.top - HEADER_OFFSET),
-            top: e.boundingClientRect.top
-          }))
-          .sort((a, b) => a.distance - b.distance)[0];
-        
-        const categoryId = nearest.el.getAttribute('data-category-id');
-        if (categoryId) activeCategoryId.value = Number(categoryId);
-      } else {
-        computeActiveCategoryByPosition();
-      }
-    },
-    {
-      root: null,
-      rootMargin: `-${HEADER_OFFSET}px 0px -60% 0px`,
-      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1]
-    }
-  );
-
-  document.querySelectorAll('[data-category-id]')
-    .forEach((el) => intersectionObserver!.observe(el));
+function recomputeSectionPositions() {
+  const sections = Array.from(document.querySelectorAll('[data-category-id]')) as HTMLElement[];
+  const positions = sections
+    .map((el) => {
+      const idAttr = el.getAttribute('data-category-id');
+      if (!idAttr) return null;
+      const rect = el.getBoundingClientRect();
+      const top = (window.pageYOffset || document.documentElement.scrollTop) + rect.top;
+      return { id: Number(idAttr), top };
+    })
+    .filter((v): v is { id: number; top: number } => v !== null)
+    .sort((a, b) => a.top - b.top);
+  sectionPositions.value = positions;
 }
 
-function computeActiveCategoryByPosition() {
-  const sections = Array.from(document.querySelectorAll('[data-category-id]')) as HTMLElement[];
-  if (sections.length === 0) return;
-
-  let bestSection: HTMLElement | null = null;
-  let bestTop = -Infinity;
-
-  for (const section of sections) {
-    const top = section.getBoundingClientRect().top;
-    if (top - HEADER_OFFSET <= 1 && top > bestTop) {
-      bestSection = section;
-      bestTop = top;
+function updateActiveCategoryFromScroll() {
+  if (sectionPositions.value.length === 0) return;
+  const y = (window.scrollY || 0) + SCROLL_OFFSET + 1;
+  // Find the last section whose top <= y
+  let chosenId = sectionPositions.value[0].id;
+  for (let i = 0; i < sectionPositions.value.length; i++) {
+    if (sectionPositions.value[i].top <= y) {
+      chosenId = sectionPositions.value[i].id;
+    } else {
+      break;
     }
   }
+  if (activeCategoryId.value !== chosenId) {
+    // Determine direction for animation
+    const currentIndex = categories.value.findIndex((c) => c.category_id === activeCategoryId.value);
+    const nextIndex = categories.value.findIndex((c) => c.category_id === chosenId);
+    animateDirection.value = nextIndex < currentIndex ? 'up' : 'down';
+    activeCategoryId.value = chosenId;
+  }
+}
 
-  const chosen = bestSection || sections[0];
-  const categoryId = chosen.getAttribute('data-category-id');
-  if (categoryId) activeCategoryId.value = Number(categoryId);
+function settleAfterScroll(targetY: number) {
+  if (scrollCheckRaf) {
+    cancelAnimationFrame(scrollCheckRaf);
+    scrollCheckRaf = null;
+  }
+  const start = performance.now();
+  const maxDurationMs = 1200;
+  const tolerance = 2;
+  const check = () => {
+    const now = performance.now();
+    const doneByTime = now - start > maxDurationMs;
+    const nearTarget = Math.abs((window.scrollY || 0) - targetY) <= tolerance;
+    if (nearTarget || doneByTime) {
+      isAutoScrolling.value = false;
+      // Ensure positions are consistent after scroll
+      recomputeSectionPositions();
+      updateActiveCategoryFromScroll();
+      return;
+    }
+    scrollCheckRaf = requestAnimationFrame(check);
+  };
+  scrollCheckRaf = requestAnimationFrame(check);
 }
 
 function onWindowScroll() {
-  computeActiveCategoryByPosition();
+  if (isAutoScrolling.value || isSearching.value) {
+    showStickySearch.value = window.scrollY > SCROLL_THRESHOLD;
+    isScrolledDown.value = (window.scrollY || 0) > 0;
+    return;
+  }
+  updateActiveCategoryFromScroll();
   showStickySearch.value = window.scrollY > SCROLL_THRESHOLD;
   isScrolledDown.value = (window.scrollY || 0) > 0;
+}
+
+function onWindowResize() {
+  recomputeSectionPositions();
 }
 
 // Initialize data and setup
 async function initializeData() {
   await Promise.all([fetchCategories(), fetchItems()]);
   await nextTick();
-  setupIntersectionObserver();
+  recomputeSectionPositions();
   window.addEventListener('scroll', onWindowScroll, { passive: true });
+  window.addEventListener('resize', onWindowResize);
+  // Recompute again shortly after to account for late-loading images
+  setTimeout(recomputeSectionPositions, 300);
+  setTimeout(recomputeSectionPositions, 1000);
 }
 
 // Lifecycle hooks
 onMounted(initializeData);
 
 onBeforeUnmount(() => {
-  intersectionObserver?.disconnect();
   window.removeEventListener('scroll', onWindowScroll);
+  window.removeEventListener('resize', onWindowResize);
 });
 
 // Watchers
@@ -446,8 +477,8 @@ watch(
   async (newLength) => {
     if (newLength > 0) {
       await nextTick();
-      setupIntersectionObserver();
-      computeActiveCategoryByPosition();
+      recomputeSectionPositions();
+      updateActiveCategoryFromScroll();
     }
   }
 );

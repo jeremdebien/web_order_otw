@@ -1,6 +1,6 @@
 <template>
   <!-- Sticky Search Bar (appears on scroll, only on ordering page) -->
-  <!-- <div 
+  <div 
     v-if="isOrderingPage && shouldShowStickySearch"
     class="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-lg shadow-md border-b border-gray-200 transition-transform duration-300"
 
@@ -30,7 +30,7 @@
         </button>
       </div>
     </div>
-  </div> -->
+  </div>
 
   <header 
   v-if="!isTrackingPage"
@@ -64,6 +64,7 @@
       <div id="logo" class="justify-self-center">
         <img
           class="h-20"
+          :style="{ width: theme.width + 'px'}"
           :src=logoUrl
           alt="Home"
         />

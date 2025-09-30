@@ -25,5 +25,6 @@ export const mamonakuTheme: Theme = {
     track_bg: `/images/mamonaku/bg.png`,
     bg_image: `/images/mamonaku/mamonaku_bg.jpg`,
     page_bg: `${supabaseUrl}/storage/v1/object/public/web-ordering/images/mamonaku_bg.jpg`,
+    width: '0px',
   }
   export default mamonakuTheme;
