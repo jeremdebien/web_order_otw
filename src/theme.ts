@@ -1,7 +1,9 @@
 import otwTheme from "./theme/otw";
 import mamonakuTheme from "./theme/mamonaku";
+import nycBakesTheme from "./theme/nyc_bakes";
 
 export type Theme = {
+  slogan: string
   colors: {
     primary: string
     secondary: string
@@ -9,6 +11,7 @@ export type Theme = {
     accent: string
     background: string
     text: string
+    secondaryText: string
   }
   fonts: {
     base: string
@@ -39,6 +42,9 @@ switch (branchName) {
   case 'mamonaku':
   default:
     theme = mamonakuTheme
+    break
+  case 'NYC_Bakes':
+    theme = nycBakesTheme
     break
 }
 

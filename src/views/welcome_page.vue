@@ -1,7 +1,7 @@
 <template>
     <div id="body" class="flex flex-col items-center justify-center w-full">
     <h1 class="text-2xl m-0 p-0">Welcome to Mamonaku</h1>
-    <h1 class="text-3xl font-bold m-0 p-0">Where every cup feels special</h1>
+    <h1 class="text-3xl font-bold m-0 p-0">{{ theme.slogan }}</h1>
     <div class="w-full h-[80vh] px-10 pt-5">
       <div class="w-full bg-[#ddf1fe] h-[70vh] p-5">
       <div class="w-full h-full bg-cover bg-center flex items-end justify-center pb-10"
@@ -13,3 +13,7 @@
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import theme from '@/theme';
+</script>

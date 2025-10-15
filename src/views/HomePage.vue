@@ -7,7 +7,7 @@
       :style="{ fontFamily: theme.fonts.base }"
       :class="{ 'fade-in': h2Visible }"
     >
-      Where every cup feels special
+      {{ theme.slogan }}
     </h2>
     <div id="content" class="h-[62vh] w-full px-10 pt-5" :class="contentVisible ? 'pop-in' : 'hidden-before'">
       <div class="h-[60vh] w-full bg-[#ddf1fe] p-2">

@@ -1,11 +1,11 @@
 import type { Theme } from "@/theme";
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 
- export const otwTheme: Theme = {
-    brand: 'OTW',
-    slogan: 'The Best Coffee in the World',
+ export const nycBakesTheme: Theme = {
+    brand: 'NYC Bakes',
+    slogan: 'The Best Bakes in NYC',
     colors: {
-      primary: '#45BF70',
+      primary: 'black',
       secondary: '#2ecc71',
       tertiary: 'black',
       accent: 'black',
@@ -22,12 +22,12 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
       mottarue: 'Mottarue, sans-serif',
     },
     borderRadius: '8px',
-    logo: '/images/otw/otw_logo.png',
-    logo_track: '/images/otw/otw_logo1.png',
-    track_bg: `/images/otw/track_bg.jpg`,
-    bg_image: `/images/otw/welcome_bg.jpg`,
+    logo: '/images/nyc/logo.webp',
+    logo_track: '/images/nyc/logo.webp',
+    track_bg: `/images/nyc/logoTrack.png`,
+    bg_image: `/images/nyc/promotion.jpg`,
     page_bg: `${supabaseUrl}/storage/v1/object/public/web-ordering/images/otw_bg.jpg`,
     width: '400px',
   }
 
-  export default otwTheme;
+  export default nycBakesTheme;

@@ -3,6 +3,7 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 
 export const mamonakuTheme: Theme = {
     brand: 'Mamonaku',
+    slogan: 'Where every cup feels special',
     colors: {
       primary: '#3b6cfd',
       secondary: '#2ecc71',
@@ -10,6 +11,7 @@ export const mamonakuTheme: Theme = {
       accent: 'black',
       background: '#f4f4f4',
       text: 'white',
+      secondaryText: 'black',
     },
     fonts: {
       heading: 'MUSASHI, sans-serif',

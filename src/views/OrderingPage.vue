@@ -69,7 +69,7 @@
             ]"
           >
             <div
-              v-for="(item, idx) in getItemsByCategory(cat.category_id)"
+            v-for="(item, idx) in getItemsByCategory(cat.category_id).slice().sort((a, b) => a.item_name.localeCompare(b.item_name))"
               :key="item.id"
               class="product-card"
               :style="{ '--stagger-index': idx }"

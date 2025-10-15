@@ -24,10 +24,10 @@ export function getOrderMessage(orderStatus: OrderStatus): string {
       return  `Please show this QR code at the counter to pay for your order.`;
 
     case OrderStatus.Preparing:
-      return `Your order is being prepared! Hang tight, we’ll notify you when it’s ready.`;
+      return `Your order is being prepared! Hang tight, we’ll update you when it’s ready.`;
 
     case OrderStatus.Ready:
-      return `Your order is ready for pickup! Head to the counter and present your QR code.`;
+      return `Your order is ready for pickup! Head to the counter and pick up your order.`;
 
     case OrderStatus.Completed:
       return `Your order has been picked up. Thanks and enjoy your order!`;
