@@ -1,16 +1,19 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="index.css">
-    <title>branchName</title>
-    <link id="branch-favicon" rel="icon" href="/images/otw/otw_logo.png" type="image/x-icon" />
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="index.css">
+  <title>branchName</title>
+  <link id="branch-favicon" rel="icon" href="/images/otw/otw_logo.png" type="image/x-icon" />
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>
 
 <script>
@@ -39,8 +42,15 @@
       favicon.href = "/images/la/la_logo.png";
       break;
 
+    case "tonkotsu":
+      document.title = "Tonkotsu Kazan";
+      favicon.href = "/images/tonkotsu/kazan_logo.png";
+      break;
+
     default:
       document.title = window.branchName || "Web Ordering";
       favicon.href = "/images/default_logo.png";
+
+
   }
 </script>

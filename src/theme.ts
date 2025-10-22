@@ -1,6 +1,7 @@
 import otwTheme from "./theme/otw";
 import mamonakuTheme from "./theme/mamonaku";
 import nycBakesTheme from "./theme/nyc_bakes";
+import tonkotsuTheme from "./theme/tonkotsu";
 
 export type Theme = {
   slogan: string
@@ -30,7 +31,7 @@ export type Theme = {
   page_bg: string
   width: string;
 }
-const branchName = import.meta.env.VITE_BRANCH_NAME 
+const branchName = import.meta.env.VITE_BRANCH_NAME
 
 
 let theme: Theme
@@ -45,6 +46,9 @@ switch (branchName) {
     break
   case 'NYC_Bakes':
     theme = nycBakesTheme
+    break
+  case 'tonkotsu':
+    theme = tonkotsuTheme
     break
 }
 

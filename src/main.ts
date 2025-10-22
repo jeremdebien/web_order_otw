@@ -7,7 +7,7 @@ import router from './router'
 
 
 /* PrimVue */
-import 'primeicons/primeicons.css'; 
+import 'primeicons/primeicons.css';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import IconField from "primevue/iconfield";
@@ -29,7 +29,7 @@ app.use(PrimeVue, {
         preset: Aura,
         options: {
             // Set darkModeSelector to false or 'none' to disable dark mode
-            darkModeSelector: false, 
+            darkModeSelector: false,
             // Or: darkModeSelector: 'none',
         }
     }
@@ -46,9 +46,9 @@ app.component('Textarea', Textarea)
 // Set CSS variable for background image using env var
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined
 if (supabaseUrl) {
-  const imagePath = "/storage/v1/object/public/web-ordering/images/mamonaku_fullbg.jpgs"
-  const cssValue = `url('${supabaseUrl}${imagePath}')`
-  document.documentElement.style.setProperty('--app-background-image', cssValue)
+    const imagePath = "/storage/v1/object/public/web-ordering/images/mamonaku_fullbg.jpgs"
+    const cssValue = `url('${supabaseUrl}${imagePath}')`
+    document.documentElement.style.setProperty('--app-background-image', cssValue)
 }
 
 app.mount('#app')

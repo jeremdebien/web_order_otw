@@ -1,9 +1,9 @@
 <template>
   <div id="body" class="flex w-full flex-col items-center justify-center overflow-hidden">
-    <h1 id="welcome" class=" h1-hidden text-3xl"
+    <h1 id="welcome" class=" h1-hidden text-3xl text-center"
     :style="{ fontFamily: theme.fonts.heading }"
     :class="{ 'fade-in': h1Visible }">Welcome to {{ brand }}</h1>
-    <h2 class="h2-hidden text-center text-5xl font-bold sm:text-5xl md:text-7xl"
+    <h2 class="h2-hidden text-center text-5xl font-bold tracking-wide sm:text-5xl md:text-7xl"
       :style="{ fontFamily: theme.fonts.base }"
       :class="{ 'fade-in': h2Visible }"
     >
