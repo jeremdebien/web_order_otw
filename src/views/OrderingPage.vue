@@ -107,52 +107,55 @@
           class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm"
           @click.self="closeModal"
         >
-          <div class="relative max-h-[90vh] w-[95%] max-w-lg overflow-hidden rounded-xl bg-white p-6 shadow-2xl">
+          <div class="relative max-h-[90vh] w-[95%] max-w-4xl overflow-hidden rounded-xl bg-white p-6 shadow-2xl">
             <div class="absolute top-0 right-0 z-10">
               <Button icon="pi pi-times" rounded text severity="secondary" @click="closeModal" />
             </div>
-
-            <div class="mb-4">
-              <img
-                class="aspect-[3/2] h-full w-full rounded-lg object-cover"
-                :src="selectedProduct?.display_image ? imagePrefix + selectedProduct.display_image : fallbackImage"
-                :alt="selectedProduct?.item_name"
-              />
-            </div>
-
-            <div class="space-y-2 flex flex-row items-center justify-between">
-              <h2 id="product-name" class="text-3xl font-light text-gray-900">{{ selectedProduct?.item_name }}</h2>
-              <!-- <p class="text-gray-500">{{ selectedProduct?.item_desc }}</p> -->
-              <p id="product-price" class="text-primary text-2xl font-bold">
-                ₱{{ selectedProduct?.price ? selectedProduct.price.toFixed(2) : '0.00' }}
-              </p>
-            </div>
-            <div>
-              <InputNumberWithStep @update="selectedProductQuantity = $event" />
-            </div>
-
-            <div class="my-2">
-              <div class="mb-4">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-lg font-semibold text-gray-800">Note to restaurant</h3>
-                  <div class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">Optional</div>
-                </div>
-                <Textarea
-                  class="mt-2 w-full rounded-md border border-gray-300"
-                  v-model="noteToRestaurant"
-                  autoResize
-                  rows="2"
+            <div class="flex flex-col gap-4 md:flex-row md:items-start md:gap-6">
+              <div class="md:w-1/2">
+                <img
+                  class="aspect-[4/3] h-full w-full rounded-lg object-cover"
+                  :src="selectedProduct?.display_image ? imagePrefix + selectedProduct.display_image : fallbackImage"
+                  :alt="selectedProduct?.item_name"
                 />
               </div>
 
-              <div>
-                <div class="flex items-center justify-between gap-2">
-                  <div v-if="selectedProduct?.price != null" class="text-lg font-bold bg-blue-600 text-white rounded-lg px-4 py-2">
-                    ₱{{ (selectedProduct.price * selectedProductQuantity).toFixed(2) }}
-
+              <div class="flex flex-1 flex-col gap-4">
+                <div class="space-y-4">
+                  <div class="flex flex-wrap items-center justify-between gap-2 md:items-start mb-3">
+                    <h2 id="product-name" class="text-3xl font-light text-gray-900">{{ selectedProduct?.item_name }}</h2>
+                    <!-- <p class="text-gray-500">{{ selectedProduct?.item_desc }}</p> -->
+                    <p id="product-price" class="text-primary text-2xl font-bold md:text-right">
+                      ₱{{ selectedProduct?.price ? selectedProduct.price.toFixed(2) : '0.00' }}
+                    </p>
                   </div>
+                  <div class="flex flex-wrap items-center justify-between gap-3">
+                    <InputNumberWithStep @update="selectedProductQuantity = $event" />
+                    <div
+                      v-if="selectedProduct?.price != null"
+                      class="text-lg font-bold bg-blue-600 text-white rounded-lg px-4 py-2 text-center sm:min-w-[8rem]"
+                    >
+                      ₱{{ (selectedProduct.price * selectedProductQuantity).toFixed(2) }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="my-2 flex flex-col gap-4">
+                  <div>
+                    <div class="flex items-center justify-between">
+                      <h3 class="text-lg font-semibold text-gray-800">Note to restaurant</h3>
+                      <div class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">Optional</div>
+                    </div>
+                    <Textarea
+                      class="mt-2 w-full rounded-md border border-gray-300"
+                      v-model="noteToRestaurant"
+                      autoResize
+                      rows="2"
+                    />
+                  </div>
+
                   <button
-                    class="w-3/4 rounded-lg bg-green-500 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-xl sm:text-lg"
+                    class="w-full rounded-lg bg-green-500 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-xl sm:w-auto sm:text-lg"
                     @click="addToCart"
                   >
                     Add to Cart
