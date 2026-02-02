@@ -3,8 +3,8 @@
     <div
       class="flex h-screen w-full flex-col items-center justify-center rounded-xl p-6 text-center text-white md:max-w-[600px] md:p-10
       bg-cover bg-center"
-      :style="{ backgroundImage: `url(${theme.track_bg})` }"    >
-    <img :src="logoTrackUrl" class="h-20 w-20" />
+      :style="{ backgroundColor: theme.colors.primary }"    >
+    <img :src="logoTrackUrl" class="h-40 w-40 pb-5" />
     <h1 class="mb-2 text-2xl font-bold md:text-xl bg-white px-4 rounded-xl" :class="{
       'text-red-600':  OrderStatusLabels[order?.order_status as OrderStatus] === OrderStatusLabels[OrderStatus.Pending]
        || OrderStatusLabels[order?.order_status as OrderStatus] === OrderStatusLabels[OrderStatus.Preparing]
@@ -28,29 +28,40 @@
           :style="{ backgroundColor: theme.colors.tertiary }"
           />
         </div>
-        <div class="p-0 font-bold" :style="{ color: theme.colors.secondaryText }">
+        <div class="p-0 font-bold" :style="{ color: 'yellow' }">
           <p ba>{{ order?.order_key }}</p>
         </div>
 
-        <h2 class="text-lg font-semibold" :style="{ color: theme.colors.secondaryText }">Items</h2>
-        <div class="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent flex-1 overflow-y-auto pr-1">
-          <ul class="grid h-40 grid-cols-1 gap-2 text-left sm:grid-cols-2">
-            <li v-for="(item, idx) in items" :key="idx" class="flex h-18 w-full rounded-xl border bg-black/90 px-2">
-              <div class="flex items-center space-x-4">
-                <img
-                  class="h-12 w-12 rounded"
-                  :src="item.items?.display_image ? imagePrefix + item.items.display_image : fallbackImage"
-                  :alt="item.items.item_name"
-                />
-                <div>
-                  <div class="font-medium">{{ `${item.quantity}x ${item.items.item_name}` }}</div>
-                  <div v-if="item.item_modifiers" class="text-sm text-gray-300 italic">
-                    Note: {{ item.item_modifiers }}
+        <template v-if="!isCompleted">
+          <h2 class="text-lg font-bold" :style="{ color: 'yellow' }">Items</h2>
+          <div class="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent flex-1 overflow-y-auto pr-1">
+            <ul class="grid h-40 grid-cols-1 gap-2 text-left sm:grid-cols-2">
+              <li v-for="(item, idx) in items" :key="idx" class="flex h-18 w-full rounded-xl border bg-black/90 px-2">
+                <div class="flex items-center space-x-4">
+                  <img
+                    class="h-12 w-12 rounded"
+                    :src="item.items?.display_image ? imagePrefix + item.items.display_image : fallbackImage"
+                    :alt="item.items.item_name"
+                  />
+                  <div>
+                    <div class="font-medium">{{ `${item.quantity}x ${item.items.item_name}` }}</div>
+                    <div v-if="item.item_modifiers" class="text-sm text-gray-300 italic">
+                      Note: {{ item.item_modifiers }}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </div>
+        </template>
+        <div v-else class="flex w-full flex-1 items-center justify-center">
+          <button
+            @click="goHome"
+            class="w-full rounded-xl bg-green py-4 border-2 border-yellow-700 text-2xl font-bold shadow-lg transition-transform active:scale-95"
+            :style="{ color: 'yellow' }"
+          >
+            Home
+          </button>
         </div>
       </div>
     </div>
@@ -58,14 +69,15 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted, onUnmounted, ref, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { supabase } from '@/lib/supabase';
 import { OrderStatus, OrderStatusLabels, getOrderMessage } from '@/enums/OrderStatus';
 import QRCode from 'qrcode';
 import theme from '@/theme';
 
 const route = useRoute();
+const router = useRouter();
 const orderKey = route.params.orderKey as string;
 const logoTrackUrl = `${theme.logo_track}`;
 
@@ -83,6 +95,14 @@ const fallbackImage =
 import { useDeviceId } from '@/composables/useDeviceId'; // <-- import
 
 const { deviceId } = useDeviceId(); // <-- use deviceId
+
+const isCompleted = computed(() => {
+  return order.value?.order_status === OrderStatus.Completed;
+});
+
+function goHome() {
+  router.push('/');
+}
 
 async function fetchOrder() {
   loading.value = true;
