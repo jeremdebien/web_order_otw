@@ -60,7 +60,7 @@
         <div v-else class="flex w-full flex-1 items-center justify-center">
           <button
             @click="goHome"
-            class="w-full rounded-xl bg-green py-4 border-2 border-yellow-700 text-2xl font-bold shadow-lg transition-transform active:scale-95"
+            class="w-full rounded-xl bg-green py-4 border-2 border-yellow-400 text-2xl font-bold shadow-lg transition-transform active:scale-95"
             :style="{ color: 'yellow' }"
           >
             Home
