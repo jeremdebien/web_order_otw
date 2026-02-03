@@ -20,6 +20,7 @@ export function useSubmitOrder() {
         item_barcode: item.barcode,
         quantity: item.quantity,
         item_price: item.price,
+        ...(item.customization && { item_customization: item.customization }),
         ...(item.note?.trim() && { item_modifiers: item.note.trim() }),
       })),
     };

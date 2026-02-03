@@ -107,7 +107,7 @@
           class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm"
           @click.self="closeModal"
         >
-          <div class="relative max-h-[90vh] w-[95%] max-w-4xl overflow-hidden rounded-xl bg-white p-6 shadow-2xl">
+          <div class="relative max-h-[90vh] w-[95%] max-w-4xl overflow-y-auto rounded-xl bg-white p-6 shadow-2xl">
             <div class="absolute top-0 right-0 z-10">
               <Button icon="pi pi-times" rounded text severity="secondary" @click="closeModal" />
             </div>
@@ -135,10 +135,17 @@
                       v-if="selectedProduct?.price != null"
                       class="text-lg font-bold bg-blue-600 text-white rounded-lg px-4 py-2 text-center sm:min-w-[8rem]"
                     >
-                      ₱{{ (selectedProduct.price * selectedProductQuantity).toFixed(2) }}
+                      ₱{{ totalPrice.toFixed(2) }}
                     </div>
                   </div>
                 </div>
+
+                <CustomizationSelector
+                  v-if="hasCustomizations"
+                  :groups="currentCustomizationGroups"
+                  v-model="selectedCustomizations"
+                  @valid="isCustomizationValid = $event"
+                />
 
                 <div class="my-2 flex flex-col gap-4">
                   <div>
@@ -155,8 +162,9 @@
                   </div>
 
                   <button
-                    class="w-full rounded-lg bg-green-500 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-xl sm:w-auto sm:text-lg"
+                    class="w-full rounded-lg bg-green-500 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-xl sm:w-auto sm:text-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
                     @click="addToCart"
+                    :disabled="hasCustomizations && !isCustomizationValid"
                   >
                     Add to Cart
                   </button>
@@ -190,6 +198,8 @@ import ProductCard from '@/components/ProductCard.vue';
 import InputNumberWithStep from '@/components/form/InputNumberWithStep.vue';
 import CartModal from '@/components/CartModal.vue';
 import CategoryCard from '@/components/form/CategoryCard.vue';
+import CustomizationSelector from '@/components/CustomizationSelector.vue';
+import { productCustomizations } from '@/data/productCustomizations';
 
 // Stores
 const cartStore = useCartStore();
@@ -213,6 +223,37 @@ const showModal = ref(false);
 const selectedProduct = ref<ProductItem | null>(null);
 const selectedProductQuantity = ref(1);
 const noteToRestaurant = ref('');
+const selectedCustomizations = ref<Record<string, string[]>>({});
+const isCustomizationValid = ref(true);
+
+const hasCustomizations = computed(() => {
+  if (!selectedProduct.value || BRANCH_ID !== 10) return false;
+  return !!productCustomizations[selectedProduct.value.barcode];
+});
+
+const currentCustomizationGroups = computed(() => {
+  if (!selectedProduct.value) return [];
+  return productCustomizations[selectedProduct.value.barcode] || [];
+});
+
+const totalPrice = computed(() => {
+  if (!selectedProduct.value) return 0;
+  let base = selectedProduct.value.price;
+  
+  // Add customization prices
+  if (BRANCH_ID === 10 && productCustomizations[selectedProduct.value.barcode]) {
+    const groups = productCustomizations[selectedProduct.value.barcode];
+    groups.forEach(group => {
+      const selections = selectedCustomizations.value[group.name] || [];
+      selections.forEach(barcode => {
+        const option = group.options.find(o => o.barcode === barcode);
+        if (option) base += option.price;
+      });
+    });
+  }
+  
+  return base * selectedProductQuantity.value;
+});
 
 // Scroll and animation state
 const activeCategoryId = ref<number | null>(null);
@@ -277,6 +318,8 @@ function closeModal() {
   showModal.value = false;
   selectedProductQuantity.value = 1;
   noteToRestaurant.value = '';
+  selectedCustomizations.value = {};
+  isCustomizationValid.value = true;
 }
 
 function afterLeave() {
@@ -285,6 +328,7 @@ function afterLeave() {
 
 function addToCart() {
   if (!selectedProduct.value) return;
+  if (hasCustomizations.value && !isCustomizationValid.value) return;
 
   const newOrder: ProductOrder = {
     barcode: selectedProduct.value.barcode,
@@ -298,6 +342,7 @@ function addToCart() {
     is_disc_exempt: selectedProduct.value.is_disc_exempt,
     is_non_vat: selectedProduct.value.is_non_vat,
     display_image: selectedProduct.value.display_image,
+    customization: hasCustomizations.value ? { ...selectedCustomizations.value } : undefined,
   };
 
   cartStore.addToCart(newOrder);
@@ -485,6 +530,14 @@ watch(
     }
   }
 );
+
+watch(showModal, (val) => {
+  if (val) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+});
 
 </script>
 

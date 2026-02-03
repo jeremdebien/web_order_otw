@@ -13,7 +13,8 @@ export const useCartStore = defineStore('cart', {
         (item) =>
           item.barcode === newOrder.barcode &&
           item.note === newOrder.note &&
-          JSON.stringify(item.modifier) === JSON.stringify(newOrder.modifier)
+          JSON.stringify(item.modifier) === JSON.stringify(newOrder.modifier) &&
+          JSON.stringify(item.customization) === JSON.stringify(newOrder.customization)
       )
 
       if (existing) {

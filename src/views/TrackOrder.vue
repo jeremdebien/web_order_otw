@@ -48,6 +48,9 @@
                     <div v-if="item.item_modifiers" class="text-sm text-gray-300 italic">
                       Note: {{ item.item_modifiers }}
                     </div>
+                    <div v-if="getCustomizationText(item)" class="text-sm text-yellow-400 font-medium italic">
+                      {{ getCustomizationText(item) }}
+                    </div>
                   </div>
                 </div>
               </li>
@@ -75,6 +78,7 @@ import { supabase } from '@/lib/supabase';
 import { OrderStatus, OrderStatusLabels, getOrderMessage } from '@/enums/OrderStatus';
 import QRCode from 'qrcode';
 import theme from '@/theme';
+import { productCustomizations } from '@/data/productCustomizations';
 
 const route = useRoute();
 const router = useRouter();
@@ -99,6 +103,24 @@ const { deviceId } = useDeviceId(); // <-- use deviceId
 const isCompleted = computed(() => {
   return order.value?.order_status === OrderStatus.Completed;
 });
+
+const getCustomizationText = (item: any) => {
+  if (!item.item_customization) return null;
+  const groups = productCustomizations[item.item_barcode] || [];
+  const parts: string[] = [];
+  
+  for (const [groupName, barcodes] of Object.entries(item.item_customization as Record<string, string[]>)) {
+    const group = groups.find(g => g.name === groupName);
+    const labels = barcodes.map(b => {
+      const option = group?.options.find(o => o.barcode === b);
+      return option?.label || b;
+    });
+    if (labels.length > 0) {
+      parts.push(labels.join(', '));
+    }
+  }
+  return parts.length > 0 ? parts.join(' | ') : null;
+};
 
 function goHome() {
   router.push('/');
@@ -137,6 +159,7 @@ async function fetchOrder() {
       quantity,
       item_price,
       item_modifiers,
+      item_customization,
       items (
         item_name,
         item_desc,

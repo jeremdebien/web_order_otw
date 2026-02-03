@@ -10,4 +10,5 @@ export interface ProductOrder {
   is_disc_exempt: boolean;
   is_non_vat: boolean;
   display_image?: string;
+  customization?: Record<string, string[]>;
 }
